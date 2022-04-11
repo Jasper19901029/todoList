@@ -5,23 +5,19 @@
 <button class="btn">+</button> 
 */
 
-const todo = document.querySelector(".todo");
-const day = document.querySelector(".day");
-const month = document.querySelector(".month");
-const btn = document.querySelector(".btn");
+const getTodo = document.querySelector(".todo");
+const getDay = document.querySelector(".day");
+const getMonth = document.querySelector(".month");
+const getBtn = document.querySelector(".btn");
 const section = document.querySelector("section");
 
 // create new todoList
-btn.addEventListener("click", () => {
-  let todoList = todo.value;
-  let dayList = parseInt(day.value);
-  let monthList = parseInt(month.value);
-
-  if (todo.value == "" || day.value == "" || month.value == "") {
+getBtn.addEventListener("click", () => {
+  if (getTodo.value == "" || getDay.value == "" || getMonth.value == "") {
     return alert("請輸入內容");
   }
   // 判斷日期與月份是否符合
-  if (dayList < 1 || dayList > 31) {
+  if (getDay.value < 1 || getDay.value > 31) {
     return alert("日期只能輸入1~31");
   }
   // if (monthList < 1 || monthList > 12) {
@@ -29,9 +25,9 @@ btn.addEventListener("click", () => {
   // } else if (dayList > 29 && monthList == 2) {
   //   return alert("2月份只能輸入1~29");
   // }
-  switch (monthList) {
+  switch (parseInt(getMonth.value)) {
     case 2:
-      if (dayList > 29) {
+      if (getDay.value > 29) {
         return alert("2月份只能輸入1~29");
       }
       break;
@@ -39,46 +35,46 @@ btn.addEventListener("click", () => {
     case 6:
     case 9:
     case 11:
-      if (dayList > 30) {
-        return alert(`${monthList}月只有30天喔`);
+      if (getDay.value > 30) {
+        return alert(`${getMonth.value}月只有30天喔`);
       }
       break;
   }
 
   // 創建div 並把input的值放進去
-  let todoLa = document.createElement("div");
-  todoLa.classList =
+  let todo = document.createElement("div");
+  todo.classList =
     "todoList d-flex align-items-start justify-content-center container mt-5";
-  let text = document.createElement("p");
-  text.innerText = todoList;
-  text.classList = "text-center h3";
+  let todoText = document.createElement("p");
+  todoText.innerText = getTodo.value;
+  todoText.classList = "text-center h3";
   let date = document.createElement("p");
   date.classList = "ps-5 h3";
-  date.innerText = monthList + "/" + dayList;
-  todoLa.appendChild(text);
-  todoLa.appendChild(date);
+  date.innerText = getMonth.value + "/" + getDay.value;
+  todo.appendChild(todoText);
+  todo.appendChild(date);
   let deleteBtn = document.createElement("button");
   deleteBtn.innerText = "-";
   deleteBtn.classList = "delete bg-transparent h3 border-0 ps-5";
-  todoLa.appendChild(deleteBtn);
+  todo.appendChild(deleteBtn);
 
   // delete todoList and localStorage data
   deleteBtn.addEventListener("click", () => {
     let checkText = JSON.parse(localStorage.getItem("list"));
     checkText.forEach((item, index) => {
-      if (text.innerText == todoList) {
+      if (todoText.innerText == todo) {
         checkText.splice(index, 1);
         localStorage.setItem("list", JSON.stringify(checkText));
       }
     });
-    todoLa.remove();
+    todo.remove();
   });
 
   // create an object
   let myTodo = {
-    todoList: todoList,
-    monthList: monthList,
-    dayList: dayList,
+    todo: getTodo.value,
+    month: getMonth.value,
+    day: getDay.value,
   };
 
   // store data into an array of object
@@ -92,11 +88,11 @@ btn.addEventListener("click", () => {
   }
   console.log(localStorage.getItem("list"));
   //add todo in section
-  section.appendChild(todoLa);
+  section.appendChild(todo);
   // clearn the input
-  todo.value = "";
-  day.value = "";
-  month.value = "";
+  getTodo.value = "";
+  getDay.value = "";
+  getMonth.value = "";
 });
 
 loadData();
@@ -109,35 +105,35 @@ function loadData() {
     myTodoArray.forEach((item) => {
       //create a todo
       // 創建div 並把input的值放進去
-      let todoLa = document.createElement("div");
-      todoLa.classList =
+      let todo = document.createElement("div");
+      todo.classList =
         "todoList d-flex align-items-start justify-content-center container mt-5";
-      let text = document.createElement("p");
-      text.innerText = item.todoList;
-      text.classList = "text-center h3";
+      let todoText = document.createElement("p");
+      todoText.innerText = item.todo;
+      todoText.classList = "text-center h3";
       let date = document.createElement("p");
       date.classList = "ps-5 h3";
-      date.innerText = item.monthList + "/" + item.dayList;
-      todoLa.appendChild(text);
-      todoLa.appendChild(date);
+      date.innerText = item.month + "/" + item.day;
+      todo.appendChild(todoText);
+      todo.appendChild(date);
       let deleteBtn = document.createElement("button");
       deleteBtn.innerText = "-";
       deleteBtn.classList = "delete bg-transparent h3 border-0 ps-5";
-      todoLa.appendChild(deleteBtn);
+      todo.appendChild(deleteBtn);
 
       // delete todoList and localStorage data
       deleteBtn.addEventListener("click", () => {
         let checkText = JSON.parse(localStorage.getItem("list"));
         checkText.forEach((item, index) => {
-          if (text.innerText == item.todoList) {
+          if (todoText.innerText == item.todo) {
             checkText.splice(index, 1);
             localStorage.setItem("list", JSON.stringify(checkText));
           }
         });
-        todoLa.remove();
+        todo.remove();
       });
       //add todo in section
-      section.appendChild(todoLa);
+      section.appendChild(todo);
     });
   }
 }
